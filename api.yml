@@ -1,0 +1,289 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger Rest Article
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+paths:
+  /contacts:
+    get:
+      operationId: contacts.get_contacts
+      tags:
+        - Contacts
+      summary: Get all Contacts
+      description: Get all Contacts
+      responses:
+        200:
+          description: Successfully get all contacts
+          schema:
+            type: array
+            items:
+              properties:
+                contact_id:
+                  type: string
+                  description: Id of the contact
+                first_name:
+                  type: string
+                  description: First name of the contact
+                last_name:
+                  type: string
+                  description: Last name of the contact
+                date_birth:
+                  type: string
+                  description: Bithday of the contact
+                phone_number:
+                  type: number
+                  description: Phone number of the contact
+    
+    post:
+      operationId: contacts.create_contact
+      tags:
+        - Contacts
+      summary: Create new Contact
+      description: Create new Contact
+      parameters:
+        - name: contact
+          in: body
+          description: Create new Contact
+          required: True
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of the contact
+              last_name:
+                type: string
+                description: Last name of the contact
+              phone_number:
+                type: string
+                description: Phone number of the contact
+              date_birth:
+                type: string
+                description: Bithday of the contacts
+      responses:
+        201:
+          description: Successfully created contact
+          schema:
+            type: object
+            properties:
+              contact_id:
+                type: string
+                description: Id of the contact
+              first_name:
+                type: string
+                description: First name of the contact
+              last_name:
+                type: string
+                description: Last name of the contact
+              date_birth:
+                type: string
+                description: Bithday of the contact
+              phone_number:
+                type: string
+                description: Phone number of the contact
+
+  /contacts/{contact_id}:
+    get:
+      operationId: contacts.get_once_contact
+      tags:
+        - Contacts
+      summary: Get one of Contacts
+      description: Get one of Contacts
+      parameters:
+        - name: contact_id
+          in: path
+          description: Id of the contact to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully get contact
+          schema:
+            type: object
+            properties:
+              contact_id:
+                type: string
+                description: Id of the contact
+              first_name:
+                type: string
+                description: First name of the contact
+              last_name:
+                type: string
+                description: Last name of the contact
+              date_birth:
+                type: string
+                description: Bithday of the contact
+              phone_number:
+                type: string
+                description: Phone number of the contact
+              histories:
+                type: array
+                items:
+                  properties:
+                    history_id:
+                      type: integer
+                      description: Id of the history
+                    created_at:
+                      type: string
+                      description: Create/Update timestamp of this history
+
+    put:
+      operationId: contacts.update_contact
+      tags:
+        - Contacts
+      summary: Update a Contact
+      description: Update a Contact
+      parameters:
+        - name: contact_id
+          in: path
+          description: Id of the contact to update
+          type: integer
+          required: True
+        - name: contact
+          in: body
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of the contact
+              last_name:
+                type: string
+                description: Last name of the contact
+              phone_number:
+                type: number
+                description: Phone number of the contact
+              date_birth:
+                type: string
+                description: Bithday of the contact
+      responses:
+        200:
+          description: Successfully update contact
+          schema:
+            type: object
+            properties:
+              contact_id:
+                type: string
+                description: Id of the contacts
+              first_name:
+                type: string
+                description: First name of the contacts
+              last_name:
+                type: string
+                description: Last name of the contacts
+              date_birth:
+                type: string
+                description: Bithday of the contacts
+              phone_number:
+                type: string
+                description: Phone number of the contacts
+
+    delete:
+      operationId: contacts.delete_contact
+      tags:
+        - Contacts
+      summary: Delete Contact
+      description: Delete Contact
+      parameters:
+        - name: contact_id
+          in: path
+          description: Id of the contact to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a contact
+
+  /histories:
+    get:
+      operationId: histories.get_all
+      tags:
+        - Histories
+      summary: Read the entire set of history for all contacts, sorted by timestamp
+      description: Read the entire set of history for all contacts, sorted by timestamp
+      responses:
+        200:
+          description: Successfully read history for all contacts operation
+          schema:
+            type: array
+            items:
+              properties:
+                history_id:
+                  type: integer
+                  description: Id of the history
+                created_at:
+                  type: string
+                  description: Create/Update timestamp of this history
+                contacts:
+                  type: object
+                  properties:
+                    contact_id:
+                      type: integer
+                      description: Id of the contact
+                    first_name:
+                      type: integer
+                      description: First name of the contact
+                    last_name:
+                      type: integer
+                      description: Last name of the contact
+                    phone_number:
+                      type: integer
+                      description: Phone number of the contact
+                
+              
+  /contacts/{contact_id}/histories:
+    post:
+      operationId: histories.create_history
+      tags:
+        - Histories
+      summary: Create a history associated with a contact
+      description: Create a history associated with a contact
+      parameters:
+        - name: contact_id
+          in: path
+          description: Id of contact associated with history
+          type: integer
+          required: True
+        - name: history
+          in: body
+          description: Date of history to create in contact
+          required: True
+          schema:
+            type: object
+            properties:
+              created_at:
+                type: string
+                description: Timestamp story was created
+      responses:
+        201:
+          description: Successfully created a story
+          schema:
+            properties:
+              history_id:
+                type: integer
+                description: Id of the history
+              created_at:
+                type: string
+                description: Create/Update timestamp of this history
+              contacts:
+                type: object
+                properties:
+                  contact_id:
+                    type: integer
+                    description: Id of the contact
+                  first_name:
+                    type: integer
+                    description: First name of the contact
+                  last_name:
+                    type: integer
+                    description: Last name of the contact
+                  phone_number:
+                    type: integer
+                    description: Phone number of the contact
