@@ -1,1 +1,1 @@
-## Simple Slask[swagger] Api with SQL alchemy and marshmallow
+## Simple Flask[swagger] Api with SQL alchemy and marshmallow
